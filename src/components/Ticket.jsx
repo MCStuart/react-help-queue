@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'moment';
 
-function Ticket(props){
+function Ticket(props) {
   var ticketStyle = {
     display: 'flex',
     margin: '.5rem'
@@ -19,7 +19,7 @@ function Ticket(props){
     marginLeft: 'auto',
     padding: '1rem'
   };
-  return (
+  const ticketInformation =
     <div style={ticketStyle}>
       <style jsx>{`
         div {
@@ -30,15 +30,29 @@ function Ticket(props){
       <h3 style={namesStyle}>{props.names}</h3>
       <h4 style={namesStyle}>{props.formattedWaitTime} ago</h4>
       <p style={issueStyle}><em>{props.issue}</em></p>
-    </div>
-  );
+    </div>;
+  if (props.currentRouterPath === '/admin'){
+    return (
+      <div onClick={() => {props.onTicketSelection({names: props.names, location: props.location, issue: props.issue, waitTime: props.formattedWaitTime});}}>
+        {ticketInformation}
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        {ticketInformation}
+      </div>
+    );
+  }
 }
 
 Ticket.propTypes = {
   names: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   issue: PropTypes.string,
-  formattedWaitTime: PropTypes.string.isRequired
+  formattedWaitTime: PropTypes.string.isRequired,
+  currentRouterPath: PropTypes.string,
+  onTicketSelection: PropTypes.func
 };
 
 export default Ticket;
